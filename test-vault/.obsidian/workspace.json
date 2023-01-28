@@ -1,0 +1,154 @@
+{
+  "main": {
+    "id": "67d4a1f8b6367b5d",
+    "type": "split",
+    "children": [
+      {
+        "id": "b9af23949ad9bf6b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5a8f7af4213cc25f",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a1f02312e0c8fdf4",
+    "type": "split",
+    "children": [
+      {
+        "id": "5924363dc8cba6c7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d252e907b82daee6",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "158ff13be7a2a388",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e7bbed21ab80b1e9",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "da8cc437f215281d",
+    "type": "split",
+    "children": [
+      {
+        "id": "7a41090a183073e2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2ffee0c3dfcff08d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "8a5521676553242f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "252abadc7e76d9d0",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "54acd6b9aff56f08",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "d252e907b82daee6",
+  "lastOpenFiles": [
+    "Pocketbook Cloud Highlights API.md",
+    "Highlights/Reinventing Organizations A Guide to Creating Organizations Inspired by the Next Stage of Human Consciousness/metadata.md",
+    "Highlights/No Rules Rules/metadata.md",
+    "Highlights/Good StrategyBad Strategy/metadata.md",
+    "Highlights/Getting Things Done The Art of Stress-free Productivity/metadata.md",
+    "Highlights/Escaping the Build Trap/metadata.md",
+    "Highlights/Befriend Your Brain/metadata.md",
+    "Highlights/Escaping the Build Trap/highlights/6C527597-BECA-5EE3-9F72-ACFBBBCA7FE2.md",
+    "Highlights/Befriend Your Brain/highlights/FA4CBDE2-C8C7-5700-B4BA-4BBB1E7557D2.md",
+    "Highlights/Befriend Your Brain/highlights/C7A84480-2246-5AF0-B6AA-2218FD312B38.md"
+  ]
+}

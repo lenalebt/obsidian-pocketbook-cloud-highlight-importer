@@ -1,10 +1,12 @@
-# top-most EditorConfig file
 root = true
 
 [*]
 charset = utf-8
 end_of_line = lf
+indent_style = space
 insert_final_newline = true
-indent_style = tab
-indent_size = 4
-tab_width = 4
+trim_trailing_whitespace = true
+
+[*.{js,ts,json,css,html}]
+indent_size = 2
+max_line_length = 180
