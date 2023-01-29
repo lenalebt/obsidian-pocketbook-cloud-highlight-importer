@@ -27,30 +27,30 @@ export interface PocketbookCloudBook {
 export interface PocketbookCloudNoteInfo {
   type: string; //TODO: guess this can be an enum or so?
   uuid: string; // UUID type? should exist I guess
-  updated: Date; //TODO: should be a date type, what should I use over here?
+  updated: Date;
 }
 export interface PocketbookCloudColorType {
   value: string;
-  updated: Date; // TODO: date
+  updated: Date;
 }
 export interface PocketbookCloudNoteType {
   value: string;
-  updated: Date; // TODO: date
+  updated: Date;
 }
 export interface PocketbookCloudNoteContent {
   text: string;
-  updated: Date; // TODO: date
+  updated: Date;
 }
 export interface PocketbookCloudMarkType {
   anchor: string;
-  created: Date; // TODO: date, but epoch
-  updated: Date; // TODO: date
+  created: Date;
+  updated: Date;
 }
 export interface PocketbookCloudQuotationType {
   begin: string;
   end: string;
   text: string;
-  updated: Date; // TODO: date
+  updated: Date;
 }
 export interface PocketbookCloudNote {
   color: PocketbookCloudColorType;
@@ -76,6 +76,7 @@ export class PocketbookCloudApiClient {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${access_token}`,
+        'Cache-Control': 'no-cache',
       },
     }).then(response => response.json.items);
 
@@ -89,6 +90,7 @@ export class PocketbookCloudApiClient {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${access_token}`,
+        'Cache-Control': 'no-cache',
       },
     }).then(response => response.json);
 
@@ -102,6 +104,7 @@ export class PocketbookCloudApiClient {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${access_token}`,
+        'Cache-Control': 'no-cache',
       },
     }).then(response => response.json);
 
@@ -116,6 +119,7 @@ export class PocketbookCloudApiClient {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${access_token}`,
+        'Cache-Control': 'no-cache',
       },
     }).then(response => response.arrayBuffer);
 
@@ -159,8 +163,6 @@ export class PocketbookCloudLoginClient {
         client_secret: this.client_secret,
       }).toString(),
     }).then(response => response.json);
-
-    console.log(login_response);
 
     this.access_token = login_response.access_token;
     this.refresh_token = login_response.refresh_token;

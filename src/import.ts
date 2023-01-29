@@ -19,6 +19,7 @@ export class PocketbookCloudHighlightsImporter {
     const books = await this.api_client.getBooks();
 
     for (const book of books) {
+      new Notice(`Importing ${book.title}`);
       const highlightIds = await this.api_client.getHighlightIdsForBook(book.fast_hash);
 
       const highlights = await Promise.all(highlightIds.map(highlightInfo => this.api_client.getHighlight(highlightInfo.uuid, book.fast_hash)));
@@ -48,19 +49,22 @@ export class PocketbookCloudHighlightsImporter {
           type: 'book',
           plugin: 'pocketbook-cloud-highlights-importer',
         };
-        await this.writeFile(
-          metadata_filename,
-          `---
-${stringify(book_yaml_frontmatter)}
----
-
-\`\`\`dataview
-LIST WITHOUT ID text
-WHERE book_id=${book.id} AND type = "highlight" and plugin = "pocketbook-cloud-highlights-importer"
-SORT sort_order
-\`\`\`
-`
-        );
+        const content = // not using multiline strings because they mess up indentation
+          '---\n' +
+          stringify(book_yaml_frontmatter) +
+          '---\n\n' +
+          '```dataviewjs\n' +
+          'dv.header(2, dv.current().title)\n' +
+          'const queryResult = await dv.query(`\n' +
+          '  TABLE WITHOUT ID text, note\n' +
+          `  FROM "${folder}/highlights"\n` +
+          `  WHERE book_id="${book.id}" AND type = "highlight" and plugin = "pocketbook-cloud-highlights-importer"\n` +
+          '  SORT sort_order\n' +
+          '`);\n\n' +
+          'const result = queryResult.value.values.map(line => "> [!quote]\\n> " + line[0] + (line[1] ? "\\n\\n> [!note]\\n> " + line[1] : ""))\n\n' +
+          'dv.list(result)\n' +
+          '```\n';
+        await this.writeFile(metadata_filename, content);
 
         //TODO: only create the CFI object once m)
         try {
@@ -90,19 +94,17 @@ SORT sort_order
             plugin: 'pocketbook-cloud-highlights-importer',
             sort_order: i,
           };
-          const content = `---
-${stringify(highlight_yaml_frontmatter)}
----
-${highlight.quotation?.text ?? ''}
-
-> [!note]
-> ${highlight.note?.text ?? ''}
-
-`;
+          const content = // not using multiline strings because they mess up indentation
+            '---\n' +
+            stringify(highlight_yaml_frontmatter) +
+            '---\n\n' +
+            `> [!quote]\n> ${highlight.quotation?.text ?? ''}\n\n` + //
+            (highlight.note?.text ? `> [!note]\n> ${highlight.note?.text ?? ''}\n` : '');
           await this.writeFile(file_name, content);
         }
       }
     }
+
     new Notice('Import done');
   }
 
