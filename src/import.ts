@@ -1,6 +1,7 @@
 import { App, Notice, TFile } from 'obsidian';
 import { PocketbookCloudApiClient, PocketbookCloudLoginClient } from './apiclient';
 import { PocketbookCloudHighlightsImporterPluginSettings } from './settings';
+import { parse, stringify } from 'yaml';
 
 var CFI = require('epub-cfi-resolver');
 
@@ -34,17 +35,23 @@ export class PocketbookCloudHighlightsImporter {
         //await this.writeFileBinary(cover_filename, await this.api_client.getBookCover(book));
 
         // write metadata file, which should be used to get all highlights together
+        const book_yaml_frontmatter = {
+          title: book.title,
+          authors: book.metadata.authors,
+          isbn: book.metadata.isbn,
+          year: book.metadata.year,
+          id: book.id,
+          fast_hash: book.fast_hash,
+          collections: book.collections,
+          uploaded_at: book.created_at,
+          read_status: book.read_status,
+          type: 'book',
+          plugin: 'pocketbook-cloud-highlights-importer',
+        };
         await this.writeFile(
           metadata_filename,
           `---
-title: ${book.title}
-authors: ${book.metadata.authors}
-isbn: ${book.metadata.isbn}
-year: ${book.metadata.year}
-id: ${book.id}
-fast_hash: ${book.fast_hash}
-type: book
-plugin: pocketbook-cloud-highlights-importer
+${stringify(book_yaml_frontmatter)}
 ---
 
 \`\`\`dataview
@@ -55,6 +62,7 @@ SORT sort_order
 `
         );
 
+        //TODO: only create the CFI object once m)
         try {
           // if sorting works, fine. if not, also fine, using date then.
           highlights.sort((a, b) => CFI.compare(this.cfi(a.quotation.begin), this.cfi(b.quotation.begin)));
@@ -66,20 +74,24 @@ SORT sort_order
         for (const highlight of highlights) {
           i++;
           const file_name = `${folder}/highlights/${highlight.uuid}.md`;
+          const highlight_yaml_frontmatter = {
+            id: highlight.uuid,
+            book_id: book.id,
+            book_fast_hash: book.fast_hash,
+            color: highlight.color?.value ?? 'unknown',
+            note: highlight.note?.text ?? '',
+            text: highlight.quotation?.text ?? '',
+            pointer: {
+              begin: highlight.quotation?.begin ?? '',
+              end: highlight.quotation?.end ?? '',
+            },
+            updated: highlight.quotation.updated,
+            type: 'highlight',
+            plugin: 'pocketbook-cloud-highlights-importer',
+            sort_order: i,
+          };
           const content = `---
-id: ${highlight.uuid}
-book_id: ${book.id}
-book_fast_hash: ${book.fast_hash}
-color: ${highlight.color?.value ?? 'unknown'}
-note: ${highlight.note?.text ?? ''}
-text: ${highlight.quotation?.text ?? ''}
-pointer:
-  begin: ${highlight.quotation?.begin ?? ''}
-  end: ${highlight.quotation?.end ?? ''}
-updated: ${highlight.quotation.updated}
-type: highlight
-plugin: pocketbook-cloud-highlights-importer
-sort_order: ${i}
+${stringify(highlight_yaml_frontmatter)}
 ---
 ${highlight.quotation?.text ?? ''}
 

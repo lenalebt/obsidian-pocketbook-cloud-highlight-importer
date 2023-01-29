@@ -19,6 +19,9 @@ export interface PocketbookCloudBook {
   fast_hash: string;
   path: string;
   link: string;
+  created_at: Date;
+  read_status: string;
+  collections: string;
   metadata: PocketbookCloudBookMetadata;
 }
 export interface PocketbookCloudNoteInfo {

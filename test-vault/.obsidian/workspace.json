@@ -11,8 +11,12 @@
             "id": "5a8f7af4213cc25f",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md"
+              }
             }
           }
         ]
@@ -138,17 +146,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d252e907b82daee6",
+  "active": "5a8f7af4213cc25f",
   "lastOpenFiles": [
+    "Highlights/From Conflict to Community/highlights/4213c9e0-2f8d-46e0-8ae0-e2fdb45cd590.md",
+    "Highlights/From Conflict to Community/highlights/218a7270-d3da-4eeb-ab10-019a80f46f8f.md",
+    "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md",
+    "Highlights/Datenintensive Anwendungen designen/metadata.md",
+    "Highlights/From Conflict to Community/metadata.md",
     "Pocketbook Cloud Highlights API.md",
+    "Testnote.md",
     "Highlights/Reinventing Organizations A Guide to Creating Organizations Inspired by the Next Stage of Human Consciousness/metadata.md",
     "Highlights/No Rules Rules/metadata.md",
-    "Highlights/Good StrategyBad Strategy/metadata.md",
-    "Highlights/Getting Things Done The Art of Stress-free Productivity/metadata.md",
-    "Highlights/Escaping the Build Trap/metadata.md",
-    "Highlights/Befriend Your Brain/metadata.md",
-    "Highlights/Escaping the Build Trap/highlights/6C527597-BECA-5EE3-9F72-ACFBBBCA7FE2.md",
-    "Highlights/Befriend Your Brain/highlights/FA4CBDE2-C8C7-5700-B4BA-4BBB1E7557D2.md",
-    "Highlights/Befriend Your Brain/highlights/C7A84480-2246-5AF0-B6AA-2218FD312B38.md"
+    "Highlights/Good StrategyBad Strategy/metadata.md"
   ]
 }
