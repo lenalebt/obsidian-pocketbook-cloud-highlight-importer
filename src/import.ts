@@ -2,6 +2,7 @@ import { App, Notice, TFile } from 'obsidian';
 import { PocketbookCloudApiClient, PocketbookCloudLoginClient } from './apiclient';
 import { PocketbookCloudHighlightsImporterPluginSettings } from './settings';
 import { parse, stringify } from 'yaml';
+import PocketbookCloudHighlightsImporterPlugin from './main';
 
 var CFI = require('epub-cfi-resolver');
 
@@ -9,8 +10,16 @@ export class PocketbookCloudHighlightsImporter {
   login_client: PocketbookCloudLoginClient;
   api_client: PocketbookCloudApiClient;
 
-  constructor(private app: App, private settings: PocketbookCloudHighlightsImporterPluginSettings) {
-    this.login_client = new PocketbookCloudLoginClient(settings.username, settings.password, settings.shop_name, settings.access_token, settings.refresh_token);
+  constructor(private app: App, private plugin: PocketbookCloudHighlightsImporterPlugin, private settings: PocketbookCloudHighlightsImporterPluginSettings) {
+    this.login_client = new PocketbookCloudLoginClient(
+      plugin,
+      settings.username,
+      null,
+      settings.shop_name,
+      settings.access_token,
+      settings.refresh_token,
+      settings.access_token_valid_until
+    );
     this.api_client = new PocketbookCloudApiClient(this.login_client);
   }
 

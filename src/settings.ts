@@ -1,20 +1,21 @@
-import { App, PluginSettingTab, Setting } from 'obsidian';
+import { App, Modal, Notice, PluginSettingTab, Setting } from 'obsidian';
+import { PocketbookCloudLoginClient } from './apiclient';
 import PocketbookCloudHighlightsImporterPlugin from './main';
 
 export interface PocketbookCloudHighlightsImporterPluginSettings {
   username: string;
-  password: string;
   shop_name: string;
   access_token: string;
+  access_token_valid_until: Date;
   refresh_token: string;
   import_folder: string;
 }
 
 export const DEFAULT_SETTINGS: PocketbookCloudHighlightsImporterPluginSettings = {
   username: '',
-  password: '',
   shop_name: '',
   access_token: '',
+  access_token_valid_until: new Date(),
   refresh_token: '',
   import_folder: '',
 };
@@ -48,16 +49,30 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
       );
 
     new Setting(containerEl)
-      .setName('Password')
-      .setDesc('Your login password')
-      .addText(text =>
-        text
-          .setPlaceholder('Enter your password')
-          .setValue(this.plugin.settings.password)
-          .onChange(async value => {
-            this.plugin.settings.password = value;
-            await this.plugin.saveSettings();
-          })
+      .setName('Credentials')
+      .setDesc('Use this to log in')
+      .addButton(button =>
+        button.setButtonText('Log in').onClick(async () => {
+          new PocketbookCloudHighlightsImporterPasswordInput(this.app, async password => {
+            const api_client = new PocketbookCloudLoginClient(
+              this.plugin,
+              this.plugin.settings.username,
+              password,
+              this.plugin.settings.shop_name,
+              null,
+              null,
+              new Date()
+            );
+            api_client.login();
+
+            this.plugin.settings.access_token = await api_client.getAccessToken();
+            this.plugin.settings.access_token_valid_until = api_client.getAccessTokenValidUntil();
+            this.plugin.settings.refresh_token = await api_client.getRefreshToken();
+            this.plugin.saveSettings();
+
+            new Notice('Logged in successfully');
+          }).open();
+        })
       );
 
     new Setting(containerEl)
@@ -74,32 +89,6 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
       );
 
     new Setting(containerEl)
-      .setName('Access Token')
-      .setDesc('This should be a hidden setting later on')
-      .addText(text =>
-        text
-          .setPlaceholder('Enter your access token')
-          .setValue(this.plugin.settings.access_token)
-          .onChange(async value => {
-            this.plugin.settings.access_token = value;
-            await this.plugin.saveSettings();
-          })
-      );
-
-    new Setting(containerEl)
-      .setName('Refresh Token')
-      .setDesc('This should be a hidden setting later on')
-      .addText(text =>
-        text
-          .setPlaceholder('Enter your refresh token')
-          .setValue(this.plugin.settings.refresh_token)
-          .onChange(async value => {
-            this.plugin.settings.refresh_token = value;
-            await this.plugin.saveSettings();
-          })
-      );
-
-    new Setting(containerEl)
       .setName('Import Folder')
       .setDesc('The folder the plugin will write to. Should be empty, do not store other data here.')
       .addText(text =>
@@ -111,5 +100,42 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
             await this.plugin.saveSettings();
           })
       );
+  }
+}
+
+export class PocketbookCloudHighlightsImporterPasswordInput extends Modal {
+  password: string;
+  onSubmit: (result: string) => void;
+
+  constructor(app: App, onSubmit: (result: string) => void) {
+    super(app);
+    this.onSubmit = onSubmit;
+  }
+
+  onOpen() {
+    const { contentEl } = this;
+
+    contentEl.createEl('h2', { text: 'Enter your password (password will not be saved).' });
+
+    new Setting(contentEl).setName('Password').addText(text =>
+      text.onChange(value => {
+        this.password = value;
+      })
+    );
+
+    new Setting(contentEl).addButton(btn =>
+      btn
+        .setButtonText('Submit')
+        .setCta()
+        .onClick(() => {
+          this.close();
+          this.onSubmit(this.password);
+        })
+    );
+  }
+
+  onClose() {
+    let { contentEl } = this;
+    contentEl.empty();
   }
 }

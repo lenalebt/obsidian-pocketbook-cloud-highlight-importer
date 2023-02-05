@@ -1,5 +1,7 @@
 import { requestUrl } from 'obsidian';
 import * as internal from 'stream';
+import PocketbookCloudHighlightsImporterPlugin from './main';
+import { PocketbookCloudHighlightsImporterPluginSettings } from './settings';
 
 export interface PocketbookCloudBookCover {
   width: number;
@@ -133,7 +135,15 @@ export class PocketbookCloudLoginClient {
   private client_id: string = 'qNAx1RDb';
   private client_secret: string = 'K3YYSjCgDJNoWKdGVOyO1mrROp3MMZqqRNXNXTmh';
 
-  constructor(private username: string, private password: string, private shop_name: string, private access_token: string, private refresh_token: string) {}
+  constructor(
+    private plugin: PocketbookCloudHighlightsImporterPlugin,
+    private username: string,
+    private password: string | null,
+    private shop_name: string,
+    private access_token: string | null,
+    private refresh_token: string | null,
+    private access_token_valid_until: Date
+  ) {}
 
   async login() {
     const shop_id = await fetch(
@@ -151,29 +161,64 @@ export class PocketbookCloudLoginClient {
       .then(data => data.providers.filter((item: any) => item.name.includes(this.shop_name)))
       .then(data => data[0].shop_id);
 
-    const login_response = await requestUrl({
-      url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      body: new URLSearchParams({
+    let login_body: URLSearchParams;
+    if (this.refresh_token) {
+      login_body = new URLSearchParams({
+        shop_id,
+        username: this.username,
+        refresh_token: this.refresh_token,
+        client_id: this.client_id,
+        client_secret: this.client_secret,
+      });
+    } else if (this.password) {
+      login_body = new URLSearchParams({
         shop_id,
         username: this.username,
         password: this.password,
         client_id: this.client_id,
         client_secret: this.client_secret,
-      }).toString(),
+      });
+    } else {
+      throw new Error('No password or refresh token provided, one is necessary to login.');
+    }
+
+    const login_response = await requestUrl({
+      url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
+      method: 'POST',
+      contentType: 'application/x-www-form-urlencoded',
+      body: login_body.toString(),
     }).then(response => response.json);
 
     this.access_token = login_response.access_token;
     this.refresh_token = login_response.refresh_token;
+
+    // sets the access token to expire 5 minutes before it actually does
+    this.access_token_valid_until = new Date(Date.now() + login_response.expires_in * 1000 - 5 * 60 * 1000);
+
+    this.plugin.settings.access_token = this.access_token!!;
+    this.plugin.settings.refresh_token = this.refresh_token!!;
+    this.plugin.settings.access_token_valid_until = this.access_token_valid_until;
+    await this.plugin.saveSettings();
   }
 
   async getAccessToken(): Promise<string> {
     // TODO: check if access token is still valid, use refresh token to get a new one, ...
-    if (!this.access_token) {
+    if (!this.access_token || this.access_token_valid_until < new Date()) {
       await this.login();
     }
 
-    return this.access_token;
+    return this.access_token!!;
+  }
+
+  async getRefreshToken(): Promise<string> {
+    if (!this.refresh_token) {
+      await this.login();
+    }
+
+    return this.refresh_token!!;
+  }
+
+  getAccessTokenValidUntil(): Date {
+    return this.access_token_valid_until;
   }
 }

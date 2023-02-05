@@ -10,7 +10,7 @@ export default class PocketbookCloudHighlightsImporterPlugin extends Plugin {
 
   async onload() {
     await this.loadSettings();
-    this.importer = new PocketbookCloudHighlightsImporter(this.app, this.settings);
+    this.importer = new PocketbookCloudHighlightsImporter(this.app, this, this.settings);
 
     // This adds a simple command that can be triggered anywhere
     this.addCommand({
