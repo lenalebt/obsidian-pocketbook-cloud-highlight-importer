@@ -161,33 +161,38 @@ export class PocketbookCloudLoginClient {
       .then(data => data.providers.filter((item: any) => item.name.includes(this.shop_name)))
       .then(data => data[0].shop_id);
 
-    let login_body: URLSearchParams;
+    console.log(`shop_id: ${shop_id}`);
+
+    let login_response;
     if (this.refresh_token) {
-      login_body = new URLSearchParams({
-        shop_id,
-        username: this.username,
-        refresh_token: this.refresh_token,
-        client_id: this.client_id,
-        client_secret: this.client_secret,
-      });
+      login_response = await requestUrl({
+        url: 'https://cloud.pocketbook.digital/api/v1.0/auth/renew-token',
+        method: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        headers: {
+          Authorization: `Bearer ${this.access_token}`,
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: this.refresh_token,
+        }).toString(),
+      }).then(response => response.json);
     } else if (this.password) {
-      login_body = new URLSearchParams({
-        shop_id,
-        username: this.username,
-        password: this.password,
-        client_id: this.client_id,
-        client_secret: this.client_secret,
-      });
+      login_response = await requestUrl({
+        url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
+        method: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        body: new URLSearchParams({
+          shop_id,
+          username: this.username,
+          password: this.password,
+          client_id: this.client_id,
+          client_secret: this.client_secret,
+        }).toString(),
+      }).then(response => response.json);
     } else {
       throw new Error('No password or refresh token provided, one is necessary to login.');
     }
-
-    const login_response = await requestUrl({
-      url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
-      method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      body: login_body.toString(),
-    }).then(response => response.json);
 
     this.access_token = login_response.access_token;
     this.refresh_token = login_response.refresh_token;
@@ -202,7 +207,7 @@ export class PocketbookCloudLoginClient {
   }
 
   async getAccessToken(): Promise<string> {
-    // TODO: check if access token is still valid, use refresh token to get a new one, ...
+    // check if access token is still valid, use refresh token to get a new one, ...
     if (!this.access_token || this.access_token_valid_until < new Date()) {
       await this.login();
     }

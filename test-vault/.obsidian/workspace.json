@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Pocketbook Cloud Highlights API.md",
+                "file": "Highlights/Befriend Your Brain/metadata.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Pocketbook Cloud Highlights API.md",
+                "file": "Highlights/Befriend Your Brain/metadata.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Pocketbook Cloud Highlights API.md",
+                "file": "Highlights/Befriend Your Brain/metadata.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Pocketbook Cloud Highlights API.md"
+                "file": "Highlights/Befriend Your Brain/metadata.md"
               }
             }
           }
@@ -148,6 +148,7 @@
   },
   "active": "cf61624d22560890",
   "lastOpenFiles": [
+    "Pocketbook Cloud Highlights API.md",
     "Highlights/Datenintensive Anwendungen designen/metadata.md",
     "Highlights/Getting Things Done The Art of Stress-free Productivity/metadata.md",
     "Highlights/Getting Things Done The Art of Stress-free Productivity/highlights/BE1FCB97-B5F5-504A-B645-C37E32DAFD16.md",
@@ -156,7 +157,6 @@
     "Highlights/From Conflict to Community/highlights/45cdb958-6059-48df-a76f-376046d03fe5.md",
     "Highlights/From Conflict to Community/highlights/218a7270-d3da-4eeb-ab10-019a80f46f8f.md",
     "Highlights/From Conflict to Community/highlights/4213c9e0-2f8d-46e0-8ae0-e2fdb45cd590.md",
-    "Pocketbook Cloud Highlights API.md",
     "Testnote.md"
   ]
 }
