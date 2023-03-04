@@ -1,7 +1,5 @@
 import { requestUrl } from 'obsidian';
-import * as internal from 'stream';
 import PocketbookCloudHighlightsImporterPlugin from './main';
-import { PocketbookCloudHighlightsImporterPluginSettings } from './settings';
 
 export interface PocketbookCloudBookCover {
   width: number;
