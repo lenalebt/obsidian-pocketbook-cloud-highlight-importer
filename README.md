@@ -27,3 +27,7 @@ The "Import Folder" is where your highlights will be saved to.
 ## Usage
 
 After setup, you can find the pocketbook cloud highlight import in the command palette.
+
+## License
+
+It's AGPL-3.0 licensed, since the used library "epub-cfi-resolver" is AGPL-3.0. I would have made it ISC-licensed otherwise.
