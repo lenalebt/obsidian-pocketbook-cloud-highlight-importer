@@ -25,7 +25,6 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "epub-cfi-resolver": "^1.0.1",
-    "yaml": "^2.2.1"
+    "epub-cfi-resolver": "^1.0.1"
   }
 }

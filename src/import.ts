@@ -1,5 +1,4 @@
-import { App, Notice, TFile } from 'obsidian';
-import { stringify } from 'yaml';
+import { App, Notice, TFile, stringifyYaml } from 'obsidian';
 import { PocketbookCloudApiClient, PocketbookCloudLoginClient } from './apiclient';
 import PocketbookCloudHighlightsImporterPlugin from './main';
 import { PocketbookCloudHighlightsImporterPluginSettings } from './settings';
@@ -60,7 +59,7 @@ export class PocketbookCloudHighlightsImporter {
         };
         const content = // not using multiline strings because they mess up indentation
           '---\n' +
-          stringify(book_yaml_frontmatter) +
+          stringifyYaml(book_yaml_frontmatter) +
           '---\n\n' +
           '```dataviewjs\n' +
           'dv.header(2, dv.current().title)\n' +
@@ -105,7 +104,7 @@ export class PocketbookCloudHighlightsImporter {
           };
           const content = // not using multiline strings because they mess up indentation
             '---\n' +
-            stringify(highlight_yaml_frontmatter) +
+            stringifyYaml(highlight_yaml_frontmatter) +
             '---\n\n' +
             `> [!quote]\n> ${highlight.quotation?.text ?? ''}\n\n` + //
             (highlight.note?.text ? `> [!note]\n> ${highlight.note?.text ?? ''}\n` : '');

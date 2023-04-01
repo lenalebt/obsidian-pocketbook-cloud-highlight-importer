@@ -2,8 +2,6 @@ import { Plugin } from 'obsidian';
 import { PocketbookCloudHighlightsImporter } from './import';
 import { DEFAULT_SETTINGS, PocketbookCloudHighlightsImporterPluginSettings, PocketbookCloudHighlightsImporterSettingTab } from './settings';
 
-// Remember to rename these classes and interfaces!
-
 export default class PocketbookCloudHighlightsImporterPlugin extends Plugin {
   settings: PocketbookCloudHighlightsImporterPluginSettings;
   importer: PocketbookCloudHighlightsImporter;
@@ -14,7 +12,7 @@ export default class PocketbookCloudHighlightsImporterPlugin extends Plugin {
 
     // This adds a simple command that can be triggered anywhere
     this.addCommand({
-      id: 'pocketbook-cloud-importer-perform-import',
+      id: 'perform-import',
       name: 'Import highlights & notes',
       callback: () => {
         this.importer.importHighlights();
