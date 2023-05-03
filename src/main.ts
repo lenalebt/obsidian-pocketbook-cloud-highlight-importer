@@ -33,5 +33,6 @@ export default class PocketbookCloudHighlightsImporterPlugin extends Plugin {
 
   async saveSettings() {
     await this.saveData(this.settings);
+    this.importer = new PocketbookCloudHighlightsImporter(this.app, this, this.settings);
   }
 }

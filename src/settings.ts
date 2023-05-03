@@ -1,4 +1,4 @@
-import { App, Modal, Notice, PluginSettingTab, Setting } from 'obsidian';
+import { App, Modal, Notice, PluginSettingTab, Setting, TextComponent } from 'obsidian';
 import { PocketbookCloudLoginClient } from './apiclient';
 import PocketbookCloudHighlightsImporterPlugin from './main';
 
@@ -48,6 +48,7 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
           })
       );
 
+    let shop_name_text_field: TextComponent;
     new Setting(containerEl)
       .setName('Credentials')
       .setDesc('Use this to log in')
@@ -70,6 +71,8 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
             this.plugin.settings.refresh_token = await api_client.getRefreshToken();
             this.plugin.saveSettings();
 
+            shop_name_text_field.setValue(this.plugin.settings.shop_name);
+
             new Notice('Logged in successfully');
           }).open();
         })
@@ -77,26 +80,31 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
 
     new Setting(containerEl)
       .setName('Shop name')
-      .setDesc('The name of the shop you are logging in to. Leave empty if you only have one; you can use a substring of the shop name here.')
-      .addText(text =>
+      .setDesc(
+        'The name of the shop you are logging in to. Will be auto-filled on login - only change if that does not work well and you know what you are doing.'
+      )
+      .addText(text => {
+        shop_name_text_field = text;
         text
           .setPlaceholder('')
           .setValue(this.plugin.settings.shop_name)
           .onChange(async value => {
             this.plugin.settings.shop_name = value;
             await this.plugin.saveSettings();
-          })
-      );
+          });
+        return text;
+      });
 
     new Setting(containerEl)
       .setName('Import Folder')
-      .setDesc('The folder the plugin will write to. Should be empty, do not store other data here.')
+      .setDesc('The folder the plugin will write to. The folder should be empty, do not store other data here.')
       .addText(text =>
         text
           .setPlaceholder('Enter your folder path from vault root')
           .setValue(this.plugin.settings.import_folder)
           .onChange(async value => {
-            this.plugin.settings.import_folder = value;
+            // filter out leading slashes, they are not needed
+            this.plugin.settings.import_folder = value.replace(/^\//, '');
             await this.plugin.saveSettings();
           })
       );

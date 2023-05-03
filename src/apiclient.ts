@@ -61,6 +61,11 @@ export interface PocketbookCloudNote {
   uuid: string; //TODO: uuid type?
 }
 
+interface PocketbookCloudShopInfo {
+  name: string;
+  shop_id: string;
+}
+
 /**
  * Main things to know about the API:
  *
@@ -144,7 +149,7 @@ export class PocketbookCloudLoginClient {
   ) {}
 
   async login() {
-    const shop_id = await fetch(
+    const shops: PocketbookCloudShopInfo[] = await fetch(
       'https://cloud.pocketbook.digital/api/v1.0/auth/login?' +
         new URLSearchParams({
           username: this.username,
@@ -156,51 +161,64 @@ export class PocketbookCloudLoginClient {
       .then(data => {
         return data;
       })
-      .then(data => data.providers.filter((item: any) => item.name.includes(this.shop_name)))
-      .then(data => data[0].shop_id);
+      .then(data => data.providers.filter((item: PocketbookCloudShopInfo) => item.name.includes(this.shop_name)));
 
-    console.log(`shop_id: ${shop_id}`);
+    const login_responses = await Promise.all(
+      shops.map(async shop => {
+        let result;
+        try {
+          if (this.refresh_token) {
+            result = await requestUrl({
+              url: 'https://cloud.pocketbook.digital/api/v1.0/auth/renew-token',
+              method: 'POST',
+              contentType: 'application/x-www-form-urlencoded',
+              headers: {
+                Authorization: `Bearer ${this.access_token}`,
+              },
+              body: new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: this.refresh_token,
+              }).toString(),
+            }).then(response => response.json);
+          } else if (this.password) {
+            result = await requestUrl({
+              url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
+              method: 'POST',
+              contentType: 'application/x-www-form-urlencoded',
+              body: new URLSearchParams({
+                shop_id: shop.shop_id,
+                username: this.username,
+                password: this.password,
+                client_id: this.client_id,
+                client_secret: this.client_secret,
+                grant_type: 'password',
+                language: 'en',
+              }).toString(),
+            }).then(response => response.json);
+          }
+        } catch (error) {
+          result = null;
+        }
+        return { shop, result };
+      })
+    );
 
-    let login_response;
-    if (this.refresh_token) {
-      login_response = await requestUrl({
-        url: 'https://cloud.pocketbook.digital/api/v1.0/auth/renew-token',
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        headers: {
-          Authorization: `Bearer ${this.access_token}`,
-        },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: this.refresh_token,
-        }).toString(),
-      }).then(response => response.json);
-    } else if (this.password) {
-      login_response = await requestUrl({
-        url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
-        method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        body: new URLSearchParams({
-          shop_id,
-          username: this.username,
-          password: this.password,
-          client_id: this.client_id,
-          client_secret: this.client_secret,
-        }).toString(),
-      }).then(response => response.json);
-    } else {
-      throw new Error('No password or refresh token provided, one is necessary to login.');
+    // use first defined response, if any
+    const login_response = login_responses.filter(response => response.result).first();
+    if (!login_response) {
+      throw new Error('Could not log in to Pocketbook Cloud');
     }
 
-    this.access_token = login_response.access_token;
-    this.refresh_token = login_response.refresh_token;
+    this.access_token = login_response.result.access_token;
+    this.refresh_token = login_response.result.refresh_token;
 
     // sets the access token to expire 5 minutes before it actually does
-    this.access_token_valid_until = new Date(Date.now() + login_response.expires_in * 1000 - 5 * 60 * 1000);
+    this.access_token_valid_until = new Date(Date.now() + login_response.result.expires_in * 1000 - 5 * 60 * 1000);
 
     this.plugin.settings.access_token = this.access_token!!;
     this.plugin.settings.refresh_token = this.refresh_token!!;
     this.plugin.settings.access_token_valid_until = this.access_token_valid_until;
+    this.plugin.settings.shop_name = login_response.shop.name;
     await this.plugin.saveSettings();
   }
 
