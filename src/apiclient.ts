@@ -62,6 +62,7 @@ export interface PocketbookCloudNote {
 }
 
 interface PocketbookCloudShopInfo {
+  alias: string;
   name: string;
   shop_id: string;
 }
@@ -182,7 +183,7 @@ export class PocketbookCloudLoginClient {
             }).then(response => response.json);
           } else if (this.password) {
             result = await requestUrl({
-              url: 'https://cloud.pocketbook.digital/api/v1.0/auth/login/knv',
+              url: `https://cloud.pocketbook.digital/api/v1.0/auth/login/${shop.alias}`,
               method: 'POST',
               contentType: 'application/x-www-form-urlencoded',
               body: new URLSearchParams({

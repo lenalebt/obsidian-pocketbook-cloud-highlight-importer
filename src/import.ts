@@ -134,12 +134,14 @@ export class PocketbookCloudHighlightsImporter {
   }
 
   private async writeFileBinary(file_name: string, content: ArrayBuffer) {
-    let file = this.app.vault.getAbstractFileByPath(file_name) as TFile;
+    const file = this.app.vault.getAbstractFileByPath(file_name) as TFile;
     if (!file) {
-      file = await this.app.vault.createBinary(file_name, content);
+      await this.app.vault.createBinary(file_name, content);
+    } else if (file instanceof TFile) {
+      await this.app.vault.modifyBinary(file, content);
+    } else {
+      throw new Error(`File ${file_name} is not a TFile, can only write to files.`);
     }
-
-    this.app.vault.modifyBinary(file, content);
   }
 
   private cfi(cfi: string) {
