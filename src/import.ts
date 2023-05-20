@@ -79,7 +79,7 @@ export class PocketbookCloudHighlightsImporter {
           // if sorting works, fine. if not, also fine, using date then.
           highlights.sort((a, b) => CFI.compare(this.cfi(a.quotation.begin), this.cfi(b.quotation.begin)));
         } catch (e) {
-          highlights.sort((a, b) => +a.quotation.updated - +b.quotation.updated);
+          highlights.sort((a, b) => +a.quotation?.updated - +b.quotation?.updated);
         }
 
         let i = 0;
@@ -97,7 +97,7 @@ export class PocketbookCloudHighlightsImporter {
               begin: highlight.quotation?.begin ?? '',
               end: highlight.quotation?.end ?? '',
             },
-            updated: highlight.quotation.updated,
+            updated: highlight.quotation?.updated,
             type: 'highlight',
             plugin: 'pocketbook-cloud-highlights-importer',
             sort_order: i,
