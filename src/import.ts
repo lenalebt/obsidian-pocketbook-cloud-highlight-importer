@@ -69,7 +69,7 @@ export class PocketbookCloudHighlightsImporter {
           `  WHERE book_id="${book.id}" AND type = "highlight" and plugin = "pocketbook-cloud-highlights-importer"\n` +
           '  SORT sort_order\n' +
           '`);\n\n' +
-          'const result = queryResult.value.values.map(line => "> [!quote]\\n> " + line[0] + (line[1] ? "\\n\\n> [!note]\\n> " + line[1] : ""))\n\n' +
+          'const result = queryResult.value.values.map(line => "> [!quote]\\n> " + line[0].replace(/\\n/g, "\\n> ") + (line[1] ? "\\n\\n> [!note]\\n> " + line[1].replace(/\\n/g, "\\n> ") : ""))\n\n' +
           'dv.list(result)\n' +
           '```\n';
         await this.writeFile(metadata_filename, content);
@@ -106,8 +106,8 @@ export class PocketbookCloudHighlightsImporter {
             '---\n' +
             stringifyYaml(highlight_yaml_frontmatter) +
             '---\n\n' +
-            `> [!quote]\n> ${highlight.quotation?.text ?? ''}\n\n` + //
-            (highlight.note?.text ? `> [!note]\n> ${highlight.note?.text ?? ''}\n` : '');
+            `> [!quote]\n> ${(highlight.quotation?.text ?? '').replace(/\n/g, '\n> ')}\n\n` + //
+            (highlight.note?.text ? `> [!note]\n> ${(highlight.note?.text ?? '').replace(/\n/g, '\n> ')}\n` : '');
           await this.writeFile(file_name, content);
         }
       }
