@@ -32,7 +32,7 @@ export class PocketbookCloudHighlightsImporter {
 
       const highlights = await Promise.all(highlightIds.map(highlightInfo => this.api_client.getHighlight(highlightInfo.uuid, book.fast_hash)));
       if (highlights.length > 0) {
-        const sanitized_book_title = book.title.replace(/[^a-zA-Z0-9 -]/g, '');
+        const sanitized_book_title = book.title.replace(/[\.#%&{}\\<>*\?/$!'":@+`|=]/g, '');
         const folder = `${this.settings.import_folder}/${sanitized_book_title}`;
         this.createFolder(folder);
         this.createFolder(`${folder}/highlights`);

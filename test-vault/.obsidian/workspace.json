@@ -11,12 +11,8 @@
             "id": "c8fff2d3392bc4b1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Highlights/No Rules Rules/metadata.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -93,7 +89,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Highlights/No Rules Rules/metadata.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,7 +105,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Highlights/No Rules Rules/metadata.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -132,9 +126,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Highlights/No Rules Rules/metadata.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -154,43 +146,6 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c8fff2d3392bc4b1",
-  "lastOpenFiles": [
-    "Highlights/Atomic Habits/highlights/2E34170D-BB04-5844-9DEA-A94B69A2B592.md",
-    "Highlights/Atomic Habits/highlights/4A74F38F-BF21-5F22-A855-34537094AF9D.md",
-    "Highlights/Atomic Habits/highlights/2183F8BC-8032-538A-A2CC-03955C12949D.md",
-    "Highlights/Atomic Habits/highlights/4DC17BD8-FD9F-534F-8C09-9E51B66B9CC6.md",
-    "Highlights/Atomic Habits/highlights/6C41FEF3-405C-54CA-931D-47353EEB73C5.md",
-    "Highlights/Atomic Habits/highlights/B5B439AB-F889-5592-A650-781729BDCE19.md",
-    "Highlights/Atomic Habits/highlights/E5A3A756-23EA-5D47-8081-1450610F4AB0.md",
-    "Highlights/Atomic Habits/highlights/FD400042-30F2-5AB9-8D46-9F6A833FCF3F.md",
-    "Highlights/Atomic Habits/highlights/FD6933DE-AE47-5D7C-BFF4-BB094B02B337.md",
-    "Highlights/Atomic Habits/metadata.md",
-    "Highlights/Atomic Habits/highlights",
-    "Highlights/Atomic Habits",
-    "Highlights/Weltuntergang fllt aus/highlights/8B9EF265-A8FB-539E-B602-55D556B0C5D0.md",
-    "Highlights/Weltuntergang fllt aus/highlights/5CFEB5D1-BCD3-5612-A63A-5D0C9992A087.md",
-    "Highlights/Weltuntergang fllt aus/metadata.md",
-    "Highlights/Weltuntergang fllt aus/highlights",
-    "Highlights/Weltuntergang fllt aus",
-    "Highlights/Befriend Your Brain/highlights/E2F7276E-CF96-54B0-9AFB-89404E91B82A.md",
-    "Highlights/Befriend Your Brain/highlights/503D15D8-6BA6-5431-8EFB-6679E24601AD.md",
-    "Highlights/Befriend Your Brain/highlights/34298097-44C7-5761-8566-73BDF3262280.md",
-    "Highlights/Befriend Your Brain/highlights/1E68FFDA-DD19-568F-86A8-B1323F7E2F1D.md",
-    "Highlights/Befriend Your Brain/highlights/D8065698-6AB9-5D74-AA55-38204C39F462.md",
-    "Highlights/Befriend Your Brain/highlights/1F49719C-1A9C-5686-865E-D8E95EA5325C.md",
-    "Highlights/Befriend Your Brain/highlights/A074A385-B7B6-55B7-A71E-112AE025ABDB.md",
-    "Highlights/Befriend Your Brain/highlights/B198D0F5-02A5-5A6D-B8BD-C5E6FED1218D.md",
-    "Highlights/Befriend Your Brain/highlights/85FEDB42-6211-508A-9765-C20403CC76F9.md",
-    "Highlights/Befriend Your Brain/highlights/68298E91-FE12-542E-B892-3778C7207E2B.md",
-    "Highlights/Befriend Your Brain/highlights/9B09EC97-863E-5CFB-A358-8861E5AEA0A4.md",
-    "Highlights/Befriend Your Brain/highlights/70B7FF9D-51B1-57A3-9560-65B74CC4A879.md",
-    "Highlights/Befriend Your Brain/highlights/997550C9-84A7-5DA2-BBA4-0E0870AEBF64.md",
-    "Highlights/Befriend Your Brain/highlights",
-    "Highlights/Befriend Your Brain",
-    "Highlights/Good StrategyBad Strategy/highlights",
-    "Highlights/Good StrategyBad Strategy",
-    "Highlights/Escaping the Build Trap/highlights",
-    "Highlights/Escaping the Build Trap"
-  ]
+  "active": "d252e907b82daee6",
+  "lastOpenFiles": []
 }
