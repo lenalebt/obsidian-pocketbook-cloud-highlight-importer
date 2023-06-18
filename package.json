@@ -1,6 +1,6 @@
 {
   "name": "pocketbook-cloud-highlight-importer",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Pocketbook Cloud Highlight Importer",
   "main": "main.js",
   "scripts": {

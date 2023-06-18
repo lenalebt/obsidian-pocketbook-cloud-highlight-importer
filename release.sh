@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 # cd to git root https://stackoverflow.com/a/38843585
 r=$(git rev-parse --git-dir) && r=$(cd "$r" && pwd)/ && cd "${r%%/.git/*}"
 
@@ -22,10 +24,10 @@ echo -n "next version: "
 read nextVersion
 
 # set version number in `manifest.json`
-sed -E -i '' "s/\"version\".*/\"version\": \"$nextVersion\",/" "manifest.json"
+sed -E -i -e "s/\"version\".*/\"version\": \"$nextVersion\",/" "manifest.json"
 
 # set version number in `package.json`
-sed -E -i '' "s/\"version\".*/\"version\": \"$nextVersion\",/" "package.json"
+sed -E -i -e "s/^  \"version\".*/  \"version\": \"$nextVersion\",/" "package.json"
 
 # add version number in `versions.json`, assuming same compatibility
 cat "versions.json" | egrep -v "^$" | grep -v "}" | sed -e '$ d' > temp
@@ -34,6 +36,9 @@ echo "  \"$lastVersion\": \"$minObsidianVersion\"," >> temp
 echo "  \"$nextVersion\": \"$minObsidianVersion\"" >> temp
 echo "}" >> temp
 mv temp versions.json
+
+echo "It's time to pause and check. All ready? Press ENTER to continue."
+read
 
 # push the manifest and versions JSONs
 git add -A
