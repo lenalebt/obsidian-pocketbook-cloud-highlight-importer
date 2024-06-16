@@ -85,6 +85,7 @@ export class PocketbookCloudHighlightsImporter {
         let i = 0;
         for (const highlight of highlights) {
           i++;
+          const highligt_name = (highlight.quotation?.text || '').slice(0, 15);
           const file_name = `${folder}/highlights/${highlight.uuid}.md`;
           const highlight_yaml_frontmatter = {
             id: highlight.uuid,
