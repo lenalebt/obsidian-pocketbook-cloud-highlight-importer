@@ -188,6 +188,19 @@ export class PocketbookCloudLoginClient {
   ) {}
 
   async login() {
+    // Validate required parameters
+    if (!this.username || this.username.trim() === '') {
+      new Notice('❌ Error: Username is required and cannot be empty');
+    }
+
+    if (!this.client_id || this.client_id.trim() === '') {
+      new Notice('❌ Error: Client ID is required and cannot be empty');
+    }
+
+    if (!this.client_secret || this.client_secret.trim() === '') {
+      new Notice('❌ Error: Client secret is required and cannot be empty');
+    }
+
     const shops: PocketbookCloudShopInfo[] = await fetch(
       'https://cloud.pocketbook.digital/api/v1.0/auth/login?' +
         new URLSearchParams({
