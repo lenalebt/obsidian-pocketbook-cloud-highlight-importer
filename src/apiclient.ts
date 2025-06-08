@@ -1,4 +1,4 @@
-import { requestUrl } from 'obsidian';
+import { Notice, requestUrl } from 'obsidian';
 import PocketbookCloudHighlightsImporterPlugin from './main';
 
 export interface PocketbookCloudBookCover {
