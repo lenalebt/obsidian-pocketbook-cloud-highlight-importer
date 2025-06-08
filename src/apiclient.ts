@@ -91,14 +91,52 @@ export class PocketbookCloudApiClient {
 
   async getHighlightIdsForBook(fast_hash: string): Promise<PocketbookCloudNoteInfo[]> {
     const access_token = await this.login_client.getAccessToken();
-    const highlights = await requestUrl({
+
+    // Make API request with comprehensive error handling
+    const response = await requestUrl({
       url: `https://cloud.pocketbook.digital/api/v1.0/notes?` + new URLSearchParams({ fast_hash }), //TODO: pagination!? unsure, never had that many notes.
       method: 'GET',
       headers: {
         Authorization: `Bearer ${access_token}`,
         'Cache-Control': 'no-cache',
       },
-    }).then(response => response.json);
+    });
+
+    // Check response status
+    if (!response.status || response.status < 200 || response.status >= 300) {
+      switch (response.status) {
+        case 401:
+          throw new Error('Unauthorized: Invalid or expired access token');
+        case 403:
+          throw new Error('Forbidden: Access denied to the requested resource');
+        case 404:
+          throw new Error('Not found: Book or highlights not found');
+        case 429:
+          throw new Error('Rate limit exceeded: Too many requests');
+        case 500:
+          throw new Error('Server error: Internal server error occurred');
+        case 503:
+          throw new Error('Service unavailable: Server is temporarily unavailable');
+        default:
+          throw new Error(`HTTP error ${response.status}: Request failed`);
+      }
+    }
+
+    // Parse JSON response with error handling
+    let highlights: PocketbookCloudNoteInfo[];
+    try {
+      highlights = response.json;
+
+      // Validate response structure
+      if (!Array.isArray(highlights)) {
+        throw new Error('Invalid response format: Expected an array of highlights');
+      }
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        throw new Error('Invalid JSON response from server');
+      }
+      throw error;
+    }
 
     return highlights;
   }
