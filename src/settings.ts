@@ -64,12 +64,17 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
               null,
               new Date()
             );
-            api_client.login();
+            try {
+              await api_client.login();
+            } catch (error) {
+              new Notice(`❌ Error logging in: ${error.message}`);
+              return;
+            }
 
             this.plugin.settings.access_token = await api_client.getAccessToken();
             this.plugin.settings.access_token_valid_until = api_client.getAccessTokenValidUntil();
             this.plugin.settings.refresh_token = await api_client.getRefreshToken();
-            this.plugin.saveSettings();
+            await this.plugin.saveSettings();
 
             shop_name_text_field.setValue(this.plugin.settings.shop_name);
 

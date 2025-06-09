@@ -258,7 +258,7 @@ export class PocketbookCloudLoginClient {
     // use first defined response, if any
     const login_response = login_responses.filter(response => response.result).first();
     if (!login_response) {
-      throw new Error('Could not log in to Pocketbook Cloud');
+      throw new Error('Could not log in to Pocketbook Cloud - check if username / password are correct.');
     }
 
     this.access_token = login_response.result.access_token;
