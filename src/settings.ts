@@ -9,6 +9,7 @@ export interface PocketbookCloudHighlightsImporterPluginSettings {
   access_token_valid_until: Date;
   refresh_token: string;
   import_folder: string;
+  flat_structure: boolean,
 }
 
 export const DEFAULT_SETTINGS: PocketbookCloudHighlightsImporterPluginSettings = {
@@ -18,6 +19,7 @@ export const DEFAULT_SETTINGS: PocketbookCloudHighlightsImporterPluginSettings =
   access_token_valid_until: new Date(),
   refresh_token: '',
   import_folder: '',
+  flat_structure: true,
 };
 
 export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTab {
@@ -113,6 +115,19 @@ export class PocketbookCloudHighlightsImporterSettingTab extends PluginSettingTa
             await this.plugin.saveSettings();
           })
       );
+    new Setting(containerEl)
+      .setName('Flat structure')
+      .setDesc('Do you want the highlights in a flat or in a nested folder structure? Enable this for flat structure. The nested structure creates separate files for each highlight and uses DataView to aggregate them in the parent file.')
+     .addToggle(toggle => {
+    toggle
+      .setValue(this.plugin.settings.flat_structure)
+      .onChange(async value => {
+        this.plugin.settings.flat_structure = value;
+        await this.plugin.saveSettings();
+      });
+    return toggle;
+  });
+
   }
 }
 

@@ -24,6 +24,9 @@ This will ask you for a password, but the password will not be saved (a refresh 
 In case you have multiple shops under your pocketbook account, you can fill the "Shop name" you want to use (substring of the name is enough).
 The "Import Folder" is where your highlights will be saved to.
 
+You can choose between a flat structure or a nested structure.
+The nested structure creates separate files for each highlight and uses DataView to aggregate them in the parent file.
+
 ## Usage
 
 After setup, you can find the pocketbook cloud highlight import in the command palette.
