@@ -21,7 +21,7 @@ export interface PocketbookCloudBook {
   link: string;
   created_at: Date;
   read_status: string;
-  collections: string;
+  collections: string | string[] | null;
   metadata: PocketbookCloudBookMetadata;
 }
 export interface PocketbookCloudNoteInfo {
@@ -201,19 +201,26 @@ export class PocketbookCloudLoginClient {
       new Notice('❌ Error: Client secret is required and cannot be empty');
     }
 
-    const shops: PocketbookCloudShopInfo[] = await fetch(
-      'https://cloud.pocketbook.digital/api/v1.0/auth/login?' +
+    const shops: PocketbookCloudShopInfo[] = await requestUrl({
+      url:
+        'https://cloud.pocketbook.digital/api/v1.0/auth/login?' +
         new URLSearchParams({
           username: this.username,
           client_id: this.client_id,
           client_secret: this.client_secret,
-        })
-    )
-      .then(response => response.json())
+        }),
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    })
+      .then(response => response.json)
       .then(data => {
-        return data;
-      })
-      .then(data => data.providers.filter((item: PocketbookCloudShopInfo) => item.name.includes(this.shop_name)));
+        if (!data.providers) {
+          throw new Error('Could not fetch login providers from Pocketbook Cloud: ' + (data.error_msg ?? 'unknown error'));
+        }
+        return data.providers.filter((item: PocketbookCloudShopInfo) => item.name.includes(this.shop_name));
+      });
 
     const login_responses = await Promise.all(
       shops.map(async shop => {

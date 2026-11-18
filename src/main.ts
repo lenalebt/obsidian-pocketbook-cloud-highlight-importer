@@ -1,4 +1,4 @@
-import { Plugin } from 'obsidian';
+import { Notice, Plugin } from 'obsidian';
 import { PocketbookCloudHighlightsImporter } from './import';
 import { DEFAULT_SETTINGS, PocketbookCloudHighlightsImporterPluginSettings, PocketbookCloudHighlightsImporterSettingTab } from './settings';
 
@@ -15,7 +15,10 @@ export default class PocketbookCloudHighlightsImporterPlugin extends Plugin {
       id: 'perform-import',
       name: 'Import highlights & notes',
       callback: () => {
-        this.importer.importHighlights();
+        this.importer.importHighlights().catch(error => {
+          console.error('Importing highlights failed', error);
+          new Notice('Importing highlights failed: ' + (error instanceof Error ? error.message : String(error)));
+        });
       },
     });
 
