@@ -21,7 +21,7 @@ export interface PocketbookCloudBook {
   link: string;
   created_at: Date;
   read_status: string;
-  collections: string;
+  collections: string | string[] | null;
   metadata: PocketbookCloudBookMetadata;
 }
 export interface PocketbookCloudNoteInfo {
